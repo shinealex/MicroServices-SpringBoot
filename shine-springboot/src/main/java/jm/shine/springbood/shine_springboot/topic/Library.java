@@ -1,14 +1,14 @@
 package jm.shine.springbood.shine_springboot.topic;
 
-public class Topic {
+public class Library {
 	
 	private String id;
 	private String name;
 	private String description;
 	
-	public Topic(){}
+	public Library(){}
 	
-	public Topic(String id, String name, String description) {
+	public Library(String id, String name, String description) {
 		super();
 		this.id = id;
 		this.name = name;

@@ -10,28 +10,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TopicController {
+public class LibraryController {
 	
 	@Autowired
-	TopicService topicService;
+	LibraryService topicService;
 	
 	@RequestMapping("/topics")
-	public List<Topic> getAllTopics() {
+	public List<Library> getAllTopics() {
 		return topicService.getAllTopics(); 
 	}
 	
 	@RequestMapping("/topics/{id}")
-	public Topic getTopic(@PathVariable String id) {
+	public Library getTopic(@PathVariable String id) {
 		return topicService.getTopic(id);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST, value="/topics")
-	public void addTopic(@RequestBody Topic topic) {
+	public void addTopic(@RequestBody Library topic) {
 		topicService.addTopic(topic);
 	}
 
 	@RequestMapping(method=RequestMethod.PUT, value="/topics/{id}")
-	public void updateTopic(@RequestBody Topic topic, @PathVariable String id) {
+	public void updateTopic(@RequestBody Library topic, @PathVariable String id) {
 		topicService.updateTopic(topic, id);
 	}
 	
