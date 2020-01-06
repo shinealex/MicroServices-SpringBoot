@@ -14,6 +14,9 @@ import jm.shine.library.activities.model.ActivityService;
 import jm.shine.library.activities.model.Book;
 import jm.shine.library.activities.model.Member;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @RestController
 @RequestMapping("/activites")
@@ -25,11 +28,15 @@ public class ActivityController {
 	@Autowired
 	ActivityService activityService;
 	
+
+    private static final Logger logger = LoggerFactory.getLogger(ActivityController.class);
+	
 	
 	@RequestMapping("/issueBook/{memberId}/{bookId}")
 	public Book issueBook(@PathVariable String memberId, @PathVariable String bookId){
 		
 		activityService.issueBook(memberId, bookId);
+		logger.info("Issue Book is invoked and Webclient call the getBook Service!");
 		
 		return  webclinetBuilder.build()
 		  .get()
@@ -44,6 +51,7 @@ public class ActivityController {
 	public List<Book> getListOfBooks(@PathVariable String memberId){
 		
 		List<String> listOfBooks = activityService.getListOfBooks(memberId);
+		logger.info("getListOfBooks is invoked with Memember : " + memberId);
 		
 		return  webclinetBuilder.build()
 				  .get()
@@ -67,9 +75,7 @@ public class ActivityController {
 				  .block();
 				  
 	}
-	
-	
-	
+		
 	@RequestMapping("/returnBook/{memberId}/{bookId}")
 	public Book returnBook(@PathVariable String memberId, @PathVariable String bookId){
 		//TODO
