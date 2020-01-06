@@ -1,5 +1,6 @@
 package jm.shine.library.books.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,12 @@ public class LibraryController {
 	}
 	
 	@RequestMapping(value="/getBooks/{booksIds}")
-	public List<Book> getBooks(@PathVariable List<String> booksIds) {
+	public List<Book> getBooks(@PathVariable List<String> booksIds){
 		return bookService.getBooks(booksIds);
 	}
 
 	@RequestMapping(value="/getBook/{id}")
-	public Book getMember(@PathVariable String id) {
+	public Book getMember(@PathVariable String id){ 
 		return bookService.getBook(id);
 	}
 	
