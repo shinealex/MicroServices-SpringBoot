@@ -13,6 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import jm.shine.library.activities.model.ActivityService;
 import jm.shine.library.activities.model.Book;
 import jm.shine.library.activities.model.Member;
+import jm.shine.library.activities.resilience4j.ResilientBookService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,9 @@ public class ActivityController {
 	@Autowired
 	ActivityService activityService;
 	
+	@Autowired
+	ResilientBookService resilientBookService;
+	
 
     private static final Logger logger = LoggerFactory.getLogger(ActivityController.class);
 	
@@ -38,14 +42,10 @@ public class ActivityController {
 		activityService.issueBook(memberId, bookId);
 		logger.info("Issue Book is invoked and Webclient call the getBook Service!");
 		
-		return  webclinetBuilder.build()
-		  .get()
-		  .uri("http://LIBRARY-BOOK/books/getBook/" + bookId)
-		  .retrieve()
-		  .bodyToMono(Book.class)
-		  .block();
-		
+		return  resilientBookService.getBook(bookId);
+
 	}
+	
 
 	@RequestMapping("/getListOfBooks/{memberId}")
 	public List<Book> getListOfBooks(@PathVariable String memberId){
