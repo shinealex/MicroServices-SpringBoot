@@ -1,7 +1,9 @@
 package jm.shine.library.activities.resilience4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -16,19 +18,24 @@ public class ResilientBookService {
 	@Autowired
 	private WebClient.Builder webclinetBuilder;
 	
+	@Autowired
+	private RestTemplate restTemplate;
+	
 	Logger logger = LoggerFactory.getLogger(ResilientBookService.class);
 
-	@CircuitBreaker(name="BOOSERVICE", fallbackMethod="fallBackgetBook")
-    @RateLimiter(name = "BOOSERVICE", fallbackMethod = "fallBackRateLimitergetBook")
+	@CircuitBreaker(name="bookService", fallbackMethod="fallBackgetBook")
+    @RateLimiter(name = "bookService", fallbackMethod = "fallBackRateLimitergetBook")
 	public Book getBook(String bookId) {
 		
-		return  webclinetBuilder.build()
+	//
+	/*	return  webclinetBuilder.build()
 				  .get()
 				  .uri("http://LIBRARY-BOOK/books/getBook/" + bookId)
 				  .retrieve()
 				  .bodyToMono(Book.class)
-				  .block();
-
+				  .block();*/
+		
+		return restTemplate.getForEntity("http://LIBRARY-BOOK/books/getBook/" + bookId, Book.class).getBody();
 	}
 	
 	public Book fallBackgetBook(String bookId, Throwable error) {
